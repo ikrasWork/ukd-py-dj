@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+{% spaceless %}
+<h3>Відгуки</h3>
+<br/>
+<a href="{% url 'add-feedback' %}">Додати Відгук</a>
+<ul>
+    {% for feedback in feedbacks %}
+    <li>
+        <strong>{{ feedback.created_at }}</strong> - {{ feedback.feedback }} ({{ feedback.name|default:"Anonymous" }})
+    </li>
+    {% endfor %}
+</ul>
+{% endspaceless %}
+{% endblock %}

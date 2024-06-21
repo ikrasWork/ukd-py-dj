@@ -1,10 +1,17 @@
-from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DateDetailView
+from django.views.generic.edit import FormView
 
-from .models import Article, Category
+from .forms import FeedbackForm
+from .models import Article, Category, Feedback
 
 
 # Create your views here.
+
+class AboutView(TemplateView):
+    template_name = 'about.html'
+
+
 class HomePageView(ListView):
     model = Article
     template_name = 'index.html'
@@ -61,3 +68,24 @@ class ArticleCategoryList(ArticleList):
     def get_queryset(self, *args, **kwargs):
         articles = Article.objects.filter(category__slug__in=[self.kwargs['slug']]).distinct()
         return articles
+
+
+class FeedbackList(ListView):
+    model = Feedback
+    template_name = 'feedbacks_list.html'
+    context_object_name = 'feedbacks'
+
+    def get_queryset(self, *args, **kwargs):
+        feedbacks = Feedback.objects.all().order_by('-created_at')
+        return feedbacks
+
+
+class AddFeedback(FormView):
+    template_name = 'add_feedback.html'
+    form_class = FeedbackForm
+    success_url = reverse_lazy('feedbacks-list')
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+

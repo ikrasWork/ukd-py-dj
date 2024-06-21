@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from .models import ArticleImage
+from .models import ArticleImage, Feedback
 
 
 class ArticleImageForm(forms.ModelForm):
@@ -10,3 +10,9 @@ class ArticleImageForm(forms.ModelForm):
 class Meta:
     model = ArticleImage
     fields = '__all__'
+
+
+class FeedbackForm(forms.ModelForm):
+    class Meta:
+        model = Feedback
+        fields = ['name', 'email', 'feedback']
